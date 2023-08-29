@@ -1,0 +1,78 @@
+\section{Theoretical Questions}
+
+\begin{enumerate}
+  \item 
+    AI is a broad field with many interpretations, and there are thus 
+    numerous ways to define this field. One broad definition is that AI is the 
+    study and construction of agents that do the right thing. Though what is 
+    considered the right thing is also up for debate. An AI should be able to 
+    make decisions or act in a way that could mimic human intelligence, thus it 
+    should emit intelligent behavior. Moreover, what we may consider intelligent
+    behavior is possible to define in many ways. One way to define it is that an
+    AI should try to maximize expected utility. This means that the AI should 
+    try to achieve some goal within a given set of contraints in a way that 
+    maximizes the expected outcome \autocite[pp.~7--22]{russell2021artificial}.
+  \item 
+    The Turing test is an experiment created by Alan Turing to see if a 
+    machine could exhibit intelligent enough behaviour to such an extent that
+    a human interacting with it, for instance posing and answering questions,
+    could not distinguish it from another human. A new proposal of the Turing
+    test includes interaction not only through answering and posing questions,
+    but actual physical interaction with humans and objects in the real world,
+    which would require for instance computer vision and robotics in addition
+    to natural language processing \autocite[p.~23]{russell2021artificial}.
+  \item 
+    Rationality is defined as doing the right thing. Thinking rationally can be 
+    described as the ability to make predictions about the future based on a 
+    sound understanding of how the world works. Acting rationally, however, is 
+    the ability to make decisions that maximize expected utility. An AI doesn't 
+    need to be able to perform rational thinking the way we humans do to act 
+    rationally. It should make decisions that are optimal given a set of goals 
+    or constraints, and may act rationally without rational though if it for 
+    example has learned from past runs or follows a set of rules 
+    \autocite[pp.~19--22]{russell2021artificial}.
+  \item
+    According to Aristotle, there is a connection between knowledge and action
+    due to the fact that to reach a goal, one has to have knowledge about the 
+    outcomes of an action, and thus what actions are required to reach a 
+    specific goal. Aristotle himself proposed an algorithm which explains how
+    his argument can be used to implement the idea in AI. One would assume the 
+    goal state and then work backwards to find a sequence of actions that would
+    lead to that goal state, i.e. regression.
+    \begin{enumerate}
+        \item 
+            Newell and Simon were the first AI researchers to implement 
+            Aristotle's ideas.
+        \item 
+            The name of the program they developed was General Problem Solver, 
+            which is a planning system that uses a greedy algorithm together
+            with regression to find a solution to a problem.
+    \end{enumerate} 
+    \autocite[p.~25]{russell2021artificial}
+  \item 
+    \begin{itemize}
+    \item
+        The robot has a set of restricted actions, which include looking and 
+        going in four different directions. We can assume that the robot would 
+        look in a specific direction, e.g. forward, to see if there were any 
+        obstacles blocking it from reaching its goal, i.e. crossing the road. 
+        If there were, it would take a step left/right, and if there were none, 
+        simply go forward. It is after this action is taken that an elk 
+        suddently crashes into the robot and smashes it. Based on this, the 
+        robot made decisions based on its available actions and the information 
+        it had at the time, and thus acted rationally. The robot could not have 
+        known that an elk would crash into it, and thus could not have avoided 
+        it. 
+    \item
+        The robot chose to cross the road on a green light, which from using its 
+        lookForward action, would mean that it was safe to cross the road. 
+        Again, the robot could not have known that a car would drive a red light 
+        and subsequently crash into it, and thus acted rationally. Even though 
+        it didn't reach its goal in any cases, it still acted within the actions 
+        and knowledge it had at its disposal to best reach its goal.
+    \end{itemize}
+  \item 6
+  \item 7
+  \item 8
+\end{enumerate}
+
