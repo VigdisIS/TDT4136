@@ -71,8 +71,71 @@
         it didn't reach its goal in any cases, it still acted within the actions 
         and knowledge it had at its disposal to best reach its goal.
     \end{itemize}
-  \item 6
-  \item 7
-  \item 8
+  \item 
+    \begin{itemize}
+    \item 
+        A simple reflex agent would make a decision on the next course of
+        action based on the current percept. Since it has no state it has no
+        knowledge about whether or not the other box is dirty, so it will
+        continously suck the dust in the current box if dirty, then move to the 
+        other, move back if that one is clean, and continue this cycle
+        indefinitely, thus not acting rationally.
+    \item 
+        Compared to the simple reflex agent, a reflex agent with state can 
+        perceive the statuses of both boxes at once. It will therefore know when 
+        in box A, whether or not box B is dirty or clean, and will make a 
+        decision based on this, thus making less useless (in terms of its goal) 
+        moves like the simple reflex agent, and act rationally.
+    \item 
+        In the case of a simple reflex agent with no internal state, but with 
+        the ability to perceive the clean status of both boxes, it would always
+        be able to make a rational decision based only on its current percepts
+        alone, thus it could be rational. The agent function would look like 
+        this:
+            If CC is the current box is clean, CD is current box is dirty, OC is
+            other box clean and OD is other box dirty, the agent function could
+            be defined in a table as follows:
+
+            [CD, OD] - Suck
+            [CD, OC] - Suck
+            [CC, OD] - Move to other box
+            [CC, OC] - Do Nothing
+    \end{itemize}
+  \item
+    The original vacuum cleaner has the following properties:
+    \begin{itemize}
+        \item 
+            \textbf{Partially observable:} it's sensors can only perceive the 
+            current box it is in, and not the state of the other box, thus it 
+            does not have full knowledge of the whole environment. 
+        \item 
+            \textbf{Single-agent:} it is the only agent in the environment, and 
+            thus does not have to consider other agents when making decisions.
+        \item 
+            \textbf{Deterministic:} the next state of the environment is
+            determined only by the current action performed by the agent.
+        \item 
+            \textbf{Episodic:} the agen't current decision won't have an 
+            impact on future decisions, thus it does not have to consider
+            future outcomes when making decisions.
+        \item 
+            \textbf{Static:} since the environment does not change while the
+            agent is deliberating and the agent is the only one impacting the 
+            environment, it is static.
+        \item 
+            \textbf{Discrete:} since there are two boxes who can either be clean
+            or dirty, the environment has a finite number of distinct states.
+        \item 
+            \textbf{Known:} the agent knows the environment and does not have to
+            rely on learning to know what action will result in the best 
+            outcome.
+    \end{itemize}
+  \item 
+    \begin{itemize}
+    \item debate
+    \item debted
+    \item sad
+    \item sd
+    \end{itemize}
 \end{enumerate}
 
