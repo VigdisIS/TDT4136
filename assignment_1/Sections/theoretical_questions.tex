@@ -25,11 +25,13 @@
     Rationality is defined as doing the right thing. Thinking rationally can be 
     described as the ability to make predictions about the future based on a 
     sound understanding of how the world works. Acting rationally, however, is 
-    the ability to make decisions that maximize expected utility. An AI doesn't 
-    need to be able to perform rational thinking the way we humans do to act 
-    rationally. It should make decisions that are optimal given a set of goals 
-    or constraints, and may act rationally without rational though if it for 
-    example has learned from past runs or follows a set of rules 
+    the ability to make decisions that maximize expected utility given ones
+    information and understanding about the world. An AI doesn't need to be able 
+    to perform rational thinking the way we humans do to act rationally. It 
+    should make decisions that are optimal given a set of goals or constraints, 
+    and may act rationally without rational thought as long as it takes the best
+    course of action given the understanding it has of the environment around it
+    due to its sensors, and the actions it can perform 
     \autocite[pp.~19--22]{russell2021artificial}.
   \item
     According to Aristotle, there is a connection between knowledge and action
@@ -75,14 +77,16 @@
     \begin{itemize}
     \item 
         A simple reflex agent would make a decision on the next course of
-        action based on the current percept. Since it has no state it has no
+        action based on the current percept 
+        \autocite[p.~67]{russell2021artificial}. Since it has no state it has no
         knowledge about whether or not the other box is dirty, so it will
         continously suck the dust in the current box if dirty, then move to the 
         other, move back if that one is clean, and continue this cycle
         indefinitely, thus not acting rationally.
     \item 
         Compared to the simple reflex agent, a reflex agent with state can 
-        perceive the statuses of both boxes at once. It will therefore know when 
+        perceive the statuses of both boxes at once 
+        \autocite[p.~69]{russell2021artificial}. It will therefore know when 
         in box A, whether or not box B is dirty or clean, and will make a 
         decision based on this, thus making less useless (in terms of its goal) 
         moves like the simple reflex agent, and act rationally.
@@ -90,16 +94,25 @@
         In the case of a simple reflex agent with no internal state, but with 
         the ability to perceive the clean status of both boxes, it would always
         be able to make a rational decision based only on its current percepts
-        alone, thus it could be rational. The agent function would look like 
-        this:
-            If CC is the current box is clean, CD is current box is dirty, OC is
-            other box clean and OD is other box dirty, the agent function could
-            be defined in a table as follows:
+        since it knows whether or not any of the boxes are clean or dirty. Thus
+        it could be rational. The agent function would look like this:
 
-            [CD, OD] - Suck
-            [CD, OC] - Suck
-            [CC, OD] - Move to other box
-            [CC, OC] - Do Nothing
+        If CC is the current box is clean, CD is current box is dirty, OC is
+        other box clean and OD is other box dirty, the agent function could
+        be defined in a table as follows:
+
+        \begin{table}[H]
+        \centering
+        \begin{tabular}{@{}ll@{}}
+        \toprule
+        Percept & Action \\ \midrule
+        {[}CD, OD{]} & Suck \\
+        {[}CD, OC{]} & Suck \\
+        {[}CC, OD{]} & Move to other box \\
+        {[}CC, OC{]} & Do nothing \\ \bottomrule
+        \end{tabular}
+        \end{table}
+
     \end{itemize}
   \item
     The original vacuum cleaner has the following properties:
@@ -130,12 +143,48 @@
             rely on learning to know what action will result in the best 
             outcome.
     \end{itemize}
+    \autocite[pp.~62--64]{russell2021artificial}
   \item 
+    Under are some advantages and limitations listed for the following types 
+    of agents:
     \begin{itemize}
-    \item debate
-    \item debted
-    \item sad
-    \item sd
+    \item 
+        \textbf{Simple reflex agents:} simple since they're made up of if-then 
+        rules, but therein also lies their limitations since these types of 
+        rules don't scale when you have to take into consideration an increasing 
+        number of cases which have to be put in manually
+        \autocite[pp.~67--69]{russell2021artificial}.
+    \item 
+        \textbf{Model-based reflex agents:} can keep track of the current state
+        of the whole environment outside of its current percept which can be 
+        utilized to make better decisions to maximize its performance measure.
+        Though in a partionally observable environment, it can only keep track 
+        of the state to the limits of its own sensors, thus it will make a guess 
+        and base its decision on that guess 
+        \autocite[pp.~69--71]{russell2021artificial}.
+    \item 
+        \textbf{Goal-based agents:} having knowledge of an explicit goal, the 
+        agent can use this together with its knowledge about the state of the 
+        environment to make better decisions. The model is also flexible in that
+        it can change its decisions based on what it believes the outcome of an
+        action will be, and thus can make even better, more informed decisions 
+        that in the end will maximize its performance measure. This model falls
+        short however when there are conflicting goals, wherein only some can be
+        achieved, and will have no way of knowing which one to choose since it
+        only measures the goal in binary "good" and "bad" states 
+        \autocite[pp.~71--72]{russell2021artificial}.
+    \item 
+        \textbf{Utility-based agents:} even more flexible than goal-based agents
+        since it also takes utility into consideration when making decisions in 
+        terms of which action to take. When there are conflicting goals, it will
+        choose an action based on an appropriate tradeoff, specified by a
+        utility function. These models are however very complicated to design as
+        they have to keep track of a lot of information. Knowing which
+        utility-maximizing action to take is also not always easy, nor is 
+        defining the utility function correctly. Trying to reach perfect 
+        rationality is also not achievable either, since it is impossible to
+        know all the possible outcomes of an action in a computationally
+        feasible way \autocite[pp.~72--74]{russell2021artificial}.
     \end{itemize}
 \end{enumerate}
 
