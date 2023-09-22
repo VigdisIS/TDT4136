@@ -105,6 +105,7 @@ def task1():
 
 def task2():
         map2 = Map_Obj(task=2)
+        map2.show_map()
         path2 = a_star(map2.int_map, map2.start_pos, map2.end_goal_pos)
         for col in path2:
             map2.set_cell_value(pos=col, value="#")
@@ -112,9 +113,8 @@ def task2():
 
 def task3():
     map3 = Map_Obj(task=3)
-    path3 = a_star(map3.int_map, map3.start_pos, map3.end_goal_pos)
     map3.show_map()
-
+    path3 = a_star(map3.int_map, map3.start_pos, map3.end_goal_pos)
     for col in path3:
         map3.set_cell_value(pos=col, value="#")
     map3.show_map()
@@ -122,7 +122,6 @@ def task3():
 def task4():
     map4 = Map_Obj(task=4)
     map4.show_map()
-
     path4 = a_star(map4.int_map, map4.start_pos, map4.end_goal_pos)
     for col in path4:
         map4.set_cell_value(pos=col, value="#")
