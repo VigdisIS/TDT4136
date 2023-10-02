@@ -5,7 +5,6 @@
 import copy
 from itertools import product as prod
 
-
 class CSP:
     def __init__(self):
         # self.variables is a list of the variable names in the CSP
@@ -168,8 +167,45 @@ class CSP:
         assignments and inferences that took place in previous
         iterations of the loop.
         """
-        # TODO: YOUR CODE HERE
-        pass
+        # Check if all variables have a single value in their domain.
+        # If they do, the assignment is complete.
+        all_values_are_valid = True
+        for values in assignment.values():
+            if len(values) > 1:
+                all_values_are_valid = False
+                break
+        if all_values_are_valid:
+            return assignment
+  
+        unassigned_variable = self.select_unassigned_variable(assignment)
+        
+        # Try all possible values for the unassigned variable
+        for value in assignment[unassigned_variable]:
+            # Create a new assignment so that we don't modify the original assignment
+            new_assignment = copy.deepcopy(assignment)
+            new_assignment[unassigned_variable] = [value]
+
+            # get the queue for the AC-3 algorithm 
+            inference_queue = self.get_all_neighboring_arcs(unassigned_variable)
+
+            # Run inferences. If no inference contradicts the assignment, continue
+            inferences = self.inference(new_assignment, inference_queue)
+            if inferences is not False:
+                # Combine the inferences with the assignment
+                for legal_value in inferences:
+                    new_assignment[legal_value] = inferences[legal_value]
+
+                # Recursively try to complete the assignment
+                result = self.backtrack(new_assignment)
+                if result:
+                    return result
+
+        # No valid assignment was found
+        return False
+
+
+        
+    
 
     def select_unassigned_variable(self, assignment):
         """The function 'Select-Unassigned-Variable' from the pseudocode
@@ -177,8 +213,12 @@ class CSP:
         in 'assignment' that have not yet been decided, i.e. whose list
         of legal values has a length greater than one.
         """
-        # TODO: YOUR CODE HERE
-        pass
+        # There are many ways to select and unassigned variable
+        # For simplicity we simply take the first value
+        for var, domain in assignment.items():
+            if len(domain) > 1:
+                return var
+    
 
     def inference(self, assignment, queue):
         """The function 'AC-3' from the pseudocode in the textbook.
@@ -186,8 +226,24 @@ class CSP:
         the lists of legal values for each undecided variable. 'queue'
         is the initial queue of arcs that should be visited.
         """
-        # TODO: YOUR CODE HERE
-        pass
+        while queue:
+            (i, j) = queue.pop(0)  # Dequeue an arc
+            if type(i) is tuple:
+                i = i[0]
+        
+            # If revising the domain of i results in a change, re-check neighbors
+            if self.revise(assignment, i, j):
+            # If domain is empty, no solution can be found; return False
+            
+                if not assignment[i]:
+                    return False
+                
+            # Enqueue neighbors of i for re-checking
+                for k in self.get_all_neighboring_arcs(i):
+                    if k != j:  # Except j, because we've already checked it
+                        queue.append((k, i))
+
+        return assignment  # All arcs are consistent
 
     def revise(self, assignment, i, j):
         """The function 'Revise' from the pseudocode in the textbook.
@@ -198,8 +254,31 @@ class CSP:
         between i and j, the value should be deleted from i's list of
         legal values in 'assignment'.
         """
-        # TODO: YOUR CODE HERE
-        pass
+        # TODO: YOUR CODE 
+        revised = False
+
+        # check each current legal value for i and j and remove all pairs that do not satisfy the constraints
+        for i_value in assignment[i]:
+            any_value_satisfies_constraints = False
+            for j_value in assignment[j]:
+                # check if the values for i and j are valid values
+                if self.satisfies_constraints(i, j, i_value, j_value):
+                    # if the values for i and j satisfy the constraints then the i_value does not get removed
+                    any_value_satisfies_constraints = True
+                    break
+            
+            # If non of the pairs for x and j satisfy the constraints the x value can be removed from the domain of i
+            if not any_value_satisfies_constraints:
+                assignment[i].remove(i_value)
+                revised = True
+
+        # return the revised assignment
+        return revised
+
+    def satisfies_constraints(self, i, j, i_value, j_value):
+        #check if the value pair is included in the constraints
+        return (i_value, j_value) in self.constraints[i][j]
+            
 
 
 def create_map_coloring_csp():
@@ -276,3 +355,24 @@ def print_sudoku_solution(solution):
         print("")
         if row == 2 or row == 5:
             print('------+-------+------')
+
+def get_results_from_board(path):
+    board = create_sudoku_csp(path)
+    solution = board.backtracking_search()
+    if solution: 
+        print(path)
+        print_sudoku_solution(solution)
+        print("-------------------------")
+    else:
+        print("no solution found for " + path)
+        print("----------------------------------------------------------------------------------------")
+
+
+def main():
+    get_results_from_board("easy.txt")
+    get_results_from_board("medium.txt")
+    get_results_from_board("hard.txt")
+    get_results_from_board("veryhard.txt")
+
+if __name__ == "__main__":
+    main()
