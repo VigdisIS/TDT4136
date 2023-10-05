@@ -17,6 +17,11 @@ class CSP:
         # the variable pair (i, j)
         self.constraints = {}
 
+        # Counters
+        self.backtrack_calls = 0
+
+        self.backtrack_failures = 0
+
     def add_variable(self, name: str, domain: list):
         """Add a new variable to the CSP.
 
@@ -167,6 +172,8 @@ class CSP:
         assignments and inferences that took place in previous
         iterations of the loop.
         """
+        # Increment the call count
+        self.backtrack_calls += 1
         # Check if all variables have a single value in their domain.
         # If they do, the assignment is complete.
         all_values_are_valid = True
@@ -201,6 +208,8 @@ class CSP:
                     return result
 
         # No valid assignment was found
+        # Increment the failure count
+        self.backtrack_failures += 1
         return False
 
 
@@ -363,6 +372,8 @@ def get_results_from_board(path):
         print(path)
         print_sudoku_solution(solution)
         print("-------------------------")
+        print("Number of backtrack calls: " + str(board.backtrack_calls))
+        print("Number of backtrack failures: " + str(board.backtrack_failures))
     else:
         print("no solution found for " + path)
         print("----------------------------------------------------------------------------------------")

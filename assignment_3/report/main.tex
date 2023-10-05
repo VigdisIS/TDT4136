@@ -1,0 +1,62 @@
+\documentclass{article}
+
+% Importing document settings from our file "packages.sty"
+\usepackage{packages}
+
+\fancyhead{} % clear all header fields
+\fancyhead[LO]{\textbf{Vigdis-Irene Steinsund, \\ Thomas Hasvold}}
+\fancyhead[CO]{\textbf{TDT4136 - Assignment 3}}
+\fancyhead[RO]{\textbf{05/10/2023}}
+
+% Beginning of document
+\begin{document}
+
+    % Defining main matter settings (Norsk: innstillinger for hoveddelen av teksten)
+    \mainmatter
+
+    \section*{Easy}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/easy.png}
+        \caption[Easy solution]{Solution for the easy sudoku board. The backtrack function was called only once, and there were no instances in which the backtrack function returned a failure.}
+        \label{fig:Easy solution}
+    \end{figure}
+
+    TODO: [Some comments about count related to theory]
+
+    \section*{Medium}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/medium.png}
+        \caption[Medium solution]{Solution for the medium sudoku board. The backtrack function was called a total of 3 times, and there were still no instances in which the backtrack function returned a failure.}
+        \label{fig:Medium solution}
+    \end{figure}
+
+    TODO: [Some comments about count related to theory]
+
+    \section*{Hard}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/hard.png}
+        \caption[Hard solution]{Solution for the hard sudoku board. The backtrack function was called a total of 12 times, and there were 4 instances in which the function returned a failure.}
+        \label{fig:Hard solution}
+    \end{figure}
+
+    TODO: [Some comments about count related to theory]
+
+    \section*{Very hard}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Images/very_hard.png}
+        \caption[Very hard solution]{Solution for the very hard sudoku board. In this solution, the backtrack function was called a total of 68 times, and a total of 57 failures were returned.}
+        \label{fig:Very hard solution}
+    \end{figure}
+
+    TODO: [Some comments about count related to theory]
+
+% End of document
+\end{document}
