@@ -6,7 +6,7 @@
 \fancyhead{} % clear all header fields
 \fancyhead[LO]{\textbf{Vigdis-Irene Steinsund, \\ Thomas Hasvold}}
 \fancyhead[CO]{\textbf{TDT4136 - Assignment 3}}
-\fancyhead[RO]{\textbf{05/10/2023}}
+\fancyhead[RO]{\textbf{06/10/2023}}
 
 % Beginning of document
 \begin{document}
@@ -23,8 +23,6 @@
         \label{fig:Easy solution}
     \end{figure}
 
-    TODO: [Some comments about count related to theory]
-
     \section*{Medium}
 
     \begin{figure}[H]
@@ -33,8 +31,6 @@
         \caption[Medium solution]{Solution for the medium sudoku board. The backtrack function was called a total of 3 times, and there were still no instances in which the backtrack function returned a failure.}
         \label{fig:Medium solution}
     \end{figure}
-
-    TODO: [Some comments about count related to theory]
 
     \section*{Hard}
 
@@ -45,8 +41,6 @@
         \label{fig:Hard solution}
     \end{figure}
 
-    TODO: [Some comments about count related to theory]
-
     \section*{Very hard}
 
     \begin{figure}[H]
@@ -56,7 +50,17 @@
         \label{fig:Very hard solution}
     \end{figure}
 
-    TODO: [Some comments about count related to theory]
+    We see in the results that the backtrack function was called around 1 - 12 
+    times in total for the first three boards, and the first four times failures
+    were returned was in the hard puzzle. The very hard puzzle however, had a total
+    of 68 calls to the backtrack function, and 57 of those calls returned a failure.
+    This makes sense since the easier puzzles have more filled cells, and thus
+    less empty cells to fill, which reduces the search space for the backtracking
+    algorithm, and it therefore needs fewer calls to the backtrack function and will also
+    not encounter failures as often. On the other hand, the very hard puzzle has a lot
+    fewer filled cells, which means the algorithm must explore a higher number of possibilities,
+    in addition to these attempts also leading to more invalid states, when it returns 
+    a failure. 
 
 % End of document
 \end{document}
