@@ -73,22 +73,10 @@ class ReflexAgent(Agent):
         newGhostStates = successorGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
+        # TODO
         "*** YOUR CODE HERE ***"
         # Initialize score with successor game state's score
-        score = successorGameState.getScore()
-
-        # Subtract the distance to the closest food
-        if newFood:
-            closestFoodDist = min([manhattanDistance(newPos, food) for food in newFood])
-            score -= closestFoodDist
-
-        # Subtract twice the distance to the closest non-scared ghost
-        for i in range(len(newGhostStates)):
-            if newScaredTimes[i] == 0:  # If the ghost is not scared
-                ghostDist = manhattanDistance(newPos, newGhostStates[i].getPosition())
-                score -= 2 * ghostDist
-
-        return score
+        return successorGameState.getScore()
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -200,6 +188,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 successor = gameState.generateSuccessor(agentIndex, a)
                 # If the current agentIndex is the last one, then the next 
                 # agent's turn will be Pacman, so we call max_value on it.
+                # TODO: Check if this is correct. Maybe use agentindex 1 and 2
+                # instead, since pacman isn't moving when not close to ghosts.
                 if agentIndex == gameState.getNumAgents() - 1:
                     temp_v, _ = max_value(successor, depth - 1)
                 # Otherwise, we call min_value on the next (ghost) agent.
