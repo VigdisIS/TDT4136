@@ -73,7 +73,9 @@ class ReflexAgent(Agent):
         newGhostStates = successorGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
-        # TODO
+        # TODO Pacman stops before eating big thing that scares ghosts
+        # and stops in place when no food is close and only starts moving again
+        # when ghosts are close. Fix
         "*** YOUR CODE HERE ***"
         # Initialize score with successor game state's score
         return successorGameState.getScore()
