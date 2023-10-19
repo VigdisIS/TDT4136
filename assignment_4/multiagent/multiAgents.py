@@ -75,7 +75,6 @@ class ReflexAgent(Agent):
         score = successorGameState.getScore()
 
         "*** YOUR CODE HERE ***"
-        # Initialize score with successor game state's score
 
         """
         DESCRIPTION: This evaluation function considers the following factors:
