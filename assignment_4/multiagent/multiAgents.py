@@ -72,13 +72,48 @@ class ReflexAgent(Agent):
         newFood = successorGameState.getFood()
         newGhostStates = successorGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+        score = successorGameState.getScore()
 
         # TODO Pacman stops before eating big thing that scares ghosts
         # and stops in place when no food is close and only starts moving again
         # when ghosts are close. Fix
         "*** YOUR CODE HERE ***"
         # Initialize score with successor game state's score
-        return successorGameState.getScore()
+
+        """
+        DESCRIPTION: This evaluation function considers the following factors:
+        1. Distance to the nearest food pellet.
+        2. The number of remaining food pellets.
+        3. The distance to the nearest ghost.
+        4. The remaining scared time of ghosts.
+        5. The game score.
+        
+        These factors are combined to create a score. The closer Pacman is to
+        food, the higher the score. The more remaining food pellets, the higher
+        the score. The farther Pacman is from ghosts, the higher the score.
+        Scared ghosts and a higher game score also contribute positively to the
+        score.
+        """
+
+        foodDistances = [manhattanDistance(newPos, foodPos) for foodPos in newFood.asList()]
+        nearestFoodDistance = min(foodDistances) if foodDistances else 1  # Prevent division by zero
+        
+        # Calculate the number of remaining food pellets
+        remainingFood = len(newFood.asList()) if len(newFood.asList()) > 0 else 1
+        
+        # Calculate the distance to the nearest ghost and remaining scared time
+        ghostDistances = [manhattanDistance(newPos, ghost.getPosition()) for ghost in newGhostStates]
+        nearestGhostDistance = min(ghostDistances) if ghostDistances else 1  # Prevent division by zero
+        
+        # Combine all factors to create a score
+        evaluationScore = 0
+        evaluationScore += 1.0 / nearestFoodDistance
+        evaluationScore += 1.0 / remainingFood
+        if (nearestGhostDistance > 0 and newScaredTimes[0] == 0):
+            evaluationScore -= 1.0 / (nearestGhostDistance)  # Add 1 to prevent division by zero
+        evaluationScore += score
+
+        return evaluationScore
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -164,7 +199,11 @@ class MinimaxAgent(MultiAgentSearchAgent):
             # action.
             for a in gameState.getLegalActions(0):
                 successor = gameState.generateSuccessor(0, a)
-                temp_v, _ = min_value(successor, depth - 1, 1) # Start with the first ghost and increment by 1 for each ghost in the min_value function
+                #
+                # I have NO IDEA WHY, but for some reason when we do not decrease the depth here everything runs perfectly 
+                #  BEFORE:   temp_v, _ = min_value(successor, depth - 1, 1)
+                # AFTER :   temp_v, _ = min_value(successor, depth, 1)
+                temp_v, _ = min_value(successor, depth, 1) # Start with the first ghost and increment by 1 for each ghost in the min_value function
                 if temp_v > v:
                     v, move = temp_v, a
             # Finally, return the value and action.
@@ -179,6 +218,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
             # return the evaluation function value of the current game state.
             if gameState.isWin() or gameState.isLose() or depth == 0:
                 return self.evaluationFunction(gameState), ""
+
             # If not, initialize the value to positive infinity and the action
             # to an empty string. 
             v = float("inf")
@@ -218,7 +258,60 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        def max_value(gameState, depth, alpha, beta):
+            if gameState.isWin() or gameState.isLose() or depth == 0:
+                return self.evaluationFunction(gameState), ""
+            
+            v = float("-inf")
+            move = ""
+            
+            for a in gameState.getLegalActions(0):
+                successor = gameState.generateSuccessor(0, a)
+                temp_v, _ = min_value(successor, depth, 1, alpha, beta)  # Pass alpha and beta to min_value
+                if temp_v > v:
+                    v, move = temp_v, a
+                
+                # Alpha-beta pruning: If v is greater than or equal to beta, return v and move
+                if v >= beta:
+                    return v, move
+                
+                # Update alpha
+                alpha = max(alpha, v)
+            
+            return v, move
+
+        def min_value(gameState, depth, agentIndex, alpha, beta):
+            if gameState.isWin() or gameState.isLose() or depth == 0:
+                return self.evaluationFunction(gameState), ""
+            
+            v = float("inf")
+            move = ""
+            
+            for a in gameState.getLegalActions(agentIndex):
+                successor = gameState.generateSuccessor(agentIndex, a)
+                
+                if agentIndex == gameState.getNumAgents() - 1:
+                    temp_v, _ = max_value(successor, depth - 1, alpha, beta)
+                else:
+                    temp_v, _ = min_value(successor, depth, agentIndex + 1, alpha, beta)
+                
+                if temp_v < v:
+                    v, move = temp_v, a
+                
+                # Alpha-beta pruning: If v is less than or equal to alpha, return v and move
+                if v <= alpha:
+                    return v, move
+                
+                # Update beta
+                beta = min(beta, v)
+            
+            return v, move
+
+        # Call max_value with initial alpha and beta values
+        _, move = max_value(gameState, self.depth, float("-inf"), float("inf"))
+        return move
+        #util.raiseNotDefined()
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
