@@ -74,9 +74,6 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
         score = successorGameState.getScore()
 
-        # TODO Pacman stops before eating big thing that scares ghosts
-        # and stops in place when no food is close and only starts moving again
-        # when ghosts are close. Fix
         "*** YOUR CODE HERE ***"
         # Initialize score with successor game state's score
 
@@ -199,11 +196,11 @@ class MinimaxAgent(MultiAgentSearchAgent):
             # action.
             for a in gameState.getLegalActions(0):
                 successor = gameState.generateSuccessor(0, a)
-                #
-                # I have NO IDEA WHY, but for some reason when we do not decrease the depth here everything runs perfectly 
-                #  BEFORE:   temp_v, _ = min_value(successor, depth - 1, 1)
-                # AFTER :   temp_v, _ = min_value(successor, depth, 1)
-                temp_v, _ = min_value(successor, depth, 1) # Start with the first ghost and increment by 1 for each ghost in the min_value function
+                # We start with the first ghost and increment by 1 for each
+                # ghost in the min_value function. We do not decrease the depth
+                # here since this represents the ghosts' turn to move, which
+                # is still part of the same 'turn' in the game.
+                temp_v, _ = min_value(successor, depth, 1)
                 if temp_v > v:
                     v, move = temp_v, a
             # Finally, return the value and action.
@@ -231,6 +228,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 # If the current agentIndex is the last one, then the next 
                 # agent's turn will be Pacman, so we call max_value on it.
                 if agentIndex == gameState.getNumAgents() - 1:
+                    # We decrease the depth by 1 when calling max_value since 
+                    # this represents Pacman's turn to move, which is the start 
+                    # of a new 'turn' in the game.
                     temp_v, _ = max_value(successor, depth - 1)
                 # Otherwise, we call min_value on the next (ghost) agent.
                 else:
@@ -261,45 +261,53 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             if gameState.isWin() or gameState.isLose() or depth == 0:
                 return self.evaluationFunction(gameState), ""
             
-            v = float('-inf')
+            v = float("-inf")
             move = ""
-
+            
             for a in gameState.getLegalActions(0):
                 successor = gameState.generateSuccessor(0, a)
-                temp_v, _ = min_value(successor, depth, 1, alpha, beta) # Pass alpha and beta to min_value
+                temp_v, _ = min_value(successor, depth, 1, alpha, beta)  # Pass alpha and beta to min_value
                 if temp_v > v:
                     v, move = temp_v, a
+                
                 # Alpha-beta pruning: If v is greater than or equal to beta, return v and move
                 # Pruning done with v > beta for max_value instead of >= due to
                 # how Berkeley Uni's test is implemented
                 if v > beta:
                     return v, move
+                
                 # Update alpha
                 alpha = max(alpha, v)
+            
             return v, move
 
         def min_value(gameState, depth, agentIndex, alpha, beta):
             if gameState.isWin() or gameState.isLose() or depth == 0:
                 return self.evaluationFunction(gameState), ""
             
-            v = float('inf')
+            v = float("inf")
             move = ""
-
+            
             for a in gameState.getLegalActions(agentIndex):
                 successor = gameState.generateSuccessor(agentIndex, a)
+                
                 if agentIndex == gameState.getNumAgents() - 1:
                     temp_v, _ = max_value(successor, depth - 1, alpha, beta)
                 else:
                     temp_v, _ = min_value(successor, depth, agentIndex + 1, alpha, beta)
+                
                 if temp_v < v:
                     v, move = temp_v, a
+                
                 # Alpha-beta pruning: If v is less than or equal to alpha, return v and move
                 # Pruning done with v < alpha for min_value instead of <= due to
                 # how Berkeley Uni's test is implemented
                 if v < alpha:
                     return v, move
+                
                 # Update beta
                 beta = min(beta, v)
+            
             return v, move
 
         # Call max_value with initial alpha and beta values
