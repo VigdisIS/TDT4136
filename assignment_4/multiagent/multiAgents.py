@@ -230,8 +230,6 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 successor = gameState.generateSuccessor(agentIndex, a)
                 # If the current agentIndex is the last one, then the next 
                 # agent's turn will be Pacman, so we call max_value on it.
-                # TODO: Check if this is correct. Maybe use agentindex 1 and 2
-                # instead, since pacman isn't moving when not close to ghosts.
                 if agentIndex == gameState.getNumAgents() - 1:
                     temp_v, _ = max_value(successor, depth - 1)
                 # Otherwise, we call min_value on the next (ghost) agent.
@@ -246,8 +244,6 @@ class MinimaxAgent(MultiAgentSearchAgent):
         _, move = max_value(gameState, self.depth)
         return move
 
-        # util.raiseNotDefined()
-
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
     Your minimax agent with alpha-beta pruning (question 3)
@@ -258,60 +254,57 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
-
+        # The max- and mini_value functions are implemented the same way as in
+        # the minimax agent, except that they take two additional parameters,
+        # alpha and beta, which are used for pruning.
         def max_value(gameState, depth, alpha, beta):
             if gameState.isWin() or gameState.isLose() or depth == 0:
                 return self.evaluationFunction(gameState), ""
             
-            v = float("-inf")
+            v = float('-inf')
             move = ""
-            
+
             for a in gameState.getLegalActions(0):
                 successor = gameState.generateSuccessor(0, a)
-                temp_v, _ = min_value(successor, depth, 1, alpha, beta)  # Pass alpha and beta to min_value
+                temp_v, _ = min_value(successor, depth, 1, alpha, beta) # Pass alpha and beta to min_value
                 if temp_v > v:
                     v, move = temp_v, a
-                
                 # Alpha-beta pruning: If v is greater than or equal to beta, return v and move
-                if v >= beta:
+                # Pruning done with v > beta for max_value instead of >= due to
+                # how Berkeley Uni's test is implemented
+                if v > beta:
                     return v, move
-                
                 # Update alpha
                 alpha = max(alpha, v)
-            
             return v, move
 
         def min_value(gameState, depth, agentIndex, alpha, beta):
             if gameState.isWin() or gameState.isLose() or depth == 0:
                 return self.evaluationFunction(gameState), ""
             
-            v = float("inf")
+            v = float('inf')
             move = ""
-            
+
             for a in gameState.getLegalActions(agentIndex):
                 successor = gameState.generateSuccessor(agentIndex, a)
-                
                 if agentIndex == gameState.getNumAgents() - 1:
                     temp_v, _ = max_value(successor, depth - 1, alpha, beta)
                 else:
                     temp_v, _ = min_value(successor, depth, agentIndex + 1, alpha, beta)
-                
                 if temp_v < v:
                     v, move = temp_v, a
-                
                 # Alpha-beta pruning: If v is less than or equal to alpha, return v and move
-                if v <= alpha:
+                # Pruning done with v < alpha for min_value instead of <= due to
+                # how Berkeley Uni's test is implemented
+                if v < alpha:
                     return v, move
-                
                 # Update beta
                 beta = min(beta, v)
-            
             return v, move
 
         # Call max_value with initial alpha and beta values
         _, move = max_value(gameState, self.depth, float("-inf"), float("inf"))
         return move
-        #util.raiseNotDefined()
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
